@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navigation from '../components/Navigation.astro';
+const pageTitle = "О сайте";
+
+const skillColor = "navy";
+const fontWeight = "bold";
+const textCase = "uppercase";
+---
+<BaseLayout pageTitle={pageTitle}>
+    <h1>{pageTitle}</h1>
+</BaseLayout>
+
+ <style define:vars={{skillColor, fontWeight, textCase}}>
+		h1 {
+			color: purple;
+			font-size: 4rem;
+		}
+		.skill {
+			color: var(--skillColor);
+			font-weight: var(--fontWeight);
+			text-transform: var(--textCase);
+  	}
+</style>
