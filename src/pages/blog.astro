@@ -1,9 +1,30 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Navigation from '../components/Navigation.astro';
+import BaseLayout from '../layouts/BaseLayout.astro'
 
-const pageTitle = "Блог";
+interface Post {
+  url: string;
+  frontmatter: {
+    title: string;
+  };
+}
+
+const allPosts = Object.values(import.meta.glob<Post>('./posts/*.md', { 
+  eager: true 
+}));
+
+const pageTitle = "Мой блог об изучении Astro"
 ---
 <BaseLayout pageTitle={pageTitle}>
-</BaseLayout>
+  <p>Здесь я буду публиковать записи о своем пути изучения Astro.</p>
+  <ul>
+    <li><a href="/posts/post-1/">Пост 1</a></li>
+    <li><a href="/posts/post-2/">Пост 2</a></li>
+    <li><a href="/posts/post-3/">Пост 3</a></li>
 
+    {allPosts.map((post) => (
+      <li>
+        <a href={post.url}>{post.frontmatter.title}</a>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>
