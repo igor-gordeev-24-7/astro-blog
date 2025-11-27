@@ -1,19 +1,28 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogPost from '../../components/BlogPost.astro';
 
 export async function getStaticPaths() {
+  const allPosts = Object.values(import.meta.glob('../posts/*.md', { eager: true }));
+
   return [
-    { params: { tag: "astro" } },
-    { params: { tag: "успехи" } },
-    { params: { tag: "сообщество" } },
-    { params: { tag: "ведение блога" } },
-    { params: { tag: "неудачи" } },
-    { params: { tag: "обучение в открытом доступе" } },
+    { params: { tag: "astro" }, props: {posts: allPosts}},
+    { params: { tag: "успехи" }, props: {posts: allPosts}},
+    { params: { tag: "сообщество" }, props: {posts: allPosts}},
+    { params: { tag: "ведение блога" }, props: {posts: allPosts}},
+    { params: { tag: "неудачи" }, props: {posts: allPosts}},
+    { params: { tag: "обучение в открытом доступе" }, props: {posts: allPosts}},
   ];
 }
 
 const { tag } = Astro.params;
+const { posts } = Astro.props;
+const filteredPosts = posts.filter((post: any) => post.frontmatter.tags?.includes(tag));
 ---
+
 <BaseLayout pageTitle={tag}>
   <p>Посты с тегом {tag}</p>
+  <ul>
+    {filteredPosts.map((post: any) => <BlogPost url={post.url} title={post.frontmatter.title}/>)}
+  </ul>
 </BaseLayout>
